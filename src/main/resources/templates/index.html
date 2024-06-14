@@ -4,20 +4,68 @@
 <head>
     <meta charset="UTF-8">
     <title>System Monitor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        #monitorChart {
+            height: 250px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        #OSinfo,
+        #Diskinfo,
+        #Networkinfo {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            color: #333;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 
 <body>
-    <div id="monitorChart" style="height: 250px;"></div>
-    <div id="OSinfo"></div>
+    <div id="monitorChart"></div>
+    <div id="OSinfo">Operating System Information</div>
     <div id="Diskinfo">
-        <table id="diskTable" border="1">
+        <table id="diskTable">
             <thead>
                 <tr>
                     <th>Disk Name</th>
                     <th>Disk Size</th>
                     <th>Disk Model</th>
-                    <th>Disk Read Bytes</th>
-                    <th>Disk Write Bytes</th>
+                    <th>Disk Read MB</th>
+                    <th>Disk Write MB</th>
                     <th>Disk Read Transfer Rate</th>
                     <th>Disk Usage</th>
                 </tr>
@@ -27,17 +75,17 @@
         </table>
     </div>
     <div id="Networkinfo">
-        <table id="networkTable" border="1">
+        <table id="networkTable">
             <thead>
                 <tr>
                     <th>Network Interface Name</th>
                     <th>MAC Address</th>
                     <th>IPv4 Address</th>
                     <th>IPv6 Address</th>
-                    <th>Packets Sent</th>
-                    <th>Packets Received</th>
-                    <th>Bytes Sent</th>
-                    <th>Bytes Received</th>
+                    <th>Thousand Packets Sent</th>
+                    <th>Thousand Packets Received</th>
+                    <th>MB Sent</th>
+                    <th>MB Received</th>
                     <th>Speed</th>
                 </tr>
             </thead>

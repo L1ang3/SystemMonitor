@@ -131,31 +131,17 @@ $(function () {
 		var row = diskTable.insertRow();
 		rows.forEach(function (data) {
 			var cell = row.insertCell();
-			cell.textContent = data[1];
+			if (data[0] == "Disk Read Bytes" || data[0] == "Disk Write Bytes") {
+				cell.textContent = (data[1] / 1048576).toFixed(3);
+			}
+			else {
+				cell.textContent = data[1];
+			}
 		});
 	}
 
-	// function updateNetworkTable(networkData) {
-	// 	var networkTable = document.getElementById('networkTable').getElementsByTagName('tbody')[0];
-	// 	networkTable.innerHTML = ''; // Clear previous data
-	// 	var interfaces = networkData.split('Network Interface Name: ');
-	// 	for (var i = 1; i < interfaces.length; i++) {
-	// 		var interfaceData = interfaces[i].split('\n');
-	// 		var row = networkTable.insertRow();
-	// 		interfaceData.forEach(function (data) {
-	// 			var cell = row.insertCell();
-	// 			var keyValue = data.split(':');
-	// 			var key = keyValue[0].trim();
-	// 			var value = keyValue.slice(1).join(':').trim();
-	// 			if (key === "MAC Address") {
-	// 				value = value.split(':').join(': '); // Add space after each colon for MAC address
-	// 			} else if (key === "IPv4 Address" || key === "IPv6 Address") {
-	// 				value = value.split('@')[1]; // Extract only the address part
-	// 			}
-	// 			cell.textContent = value;
-	// 		});
-	// 	}
-	// }
+
+
 	function updateNetworkTable(networkData) {
 		var networkTable = document.getElementById('networkTable').getElementsByTagName('tbody')[0];
 		networkTable.innerHTML = ''; // Clear previous data
@@ -176,6 +162,17 @@ $(function () {
 					value = value.split(':').join(': '); // Add space after each colon for MAC address
 				} else if (key === "IPv4 Address" || key === "IPv6 Address") {
 					value = value.split('@')[1]; // Extract only the address part
+				} else if (key == "Bytes Sent" || key === "Bytes Sent") {
+					value /= 1048576;
+					value = value.toFixed(3);
+				} else if (key == "Packets Sent" || key == "Packets Received") {
+					value /= 1000;
+					value - value.toFixed(3);
+				} else if (key == "Speed") {
+					var number = value.match(/\d+/);
+					number /= 1048576;
+
+					value = number.toFixed(3) + " MBps";
 				}
 				cell.textContent = value;
 			});
