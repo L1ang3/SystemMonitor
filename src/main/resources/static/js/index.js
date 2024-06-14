@@ -122,22 +122,25 @@ $(function () {
 	function updateDiskTable(diskData) {
 		var diskTable = document.getElementById('diskTable').getElementsByTagName('tbody')[0];
 		diskTable.innerHTML = ''; // Clear previous data
-		var rows = diskData.split('\n').map(function (line) {
-			return line.split(':').map(function (item) {
-				return item.trim();
+		var disks = diskData.split('Disk Name');
+		for (var i = 1; i < disks.length; i++) {
+			var rows = disks[i].split('\n').map(function (line) {
+				return line.split(':').map(function (item) {
+					return item.trim();
+				});
 			});
-		});
 
-		var row = diskTable.insertRow();
-		rows.forEach(function (data) {
-			var cell = row.insertCell();
-			if (data[0] == "Disk Read Bytes" || data[0] == "Disk Write Bytes") {
-				cell.textContent = (data[1] / 1048576).toFixed(3);
-			}
-			else {
-				cell.textContent = data[1];
-			}
-		});
+			var row = diskTable.insertRow();
+			rows.forEach(function (data) {
+				var cell = row.insertCell();
+				if (data[0] == "Disk Read Bytes" || data[0] == "Disk Write Bytes") {
+					cell.textContent = (data[1] / 1048576).toFixed(3);
+				}
+				else {
+					cell.textContent = data[1];
+				}
+			});
+		}
 	}
 
 
