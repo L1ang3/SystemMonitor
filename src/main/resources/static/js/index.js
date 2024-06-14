@@ -43,18 +43,14 @@ $(function () {
 				type: 'value',
 				// max:100,
 				name: '',
-
 			}
-
 		],
-		// series:[],
 		series: [
 			{
 				name: 'cpu%',
 				type: 'line',
 				symbol: 'none',
 				data: []
-
 			},
 			{
 				name: 'mem%',
@@ -67,10 +63,7 @@ $(function () {
 	};
 	var arrayIp = [];
 	freshChart();
-	/**
-	 * fresh Chart
-	 *
-	 */
+
 	function freshChart() {
 		monitorChart = echarts.init(document.getElementById('monitorChart'));
 		OSinfo = document.getElementById('OSinfo');
@@ -78,9 +71,7 @@ $(function () {
 		Networkinfo = document.getElementById('Networkinfo');
 		monitorChart.setOption(option);
 		monitorChartRefresh();
-
 	}
-
 
 	function monitorChartRefresh(newUrl) {
 		if (typeof (WebSocket) == "undefined") {
@@ -95,14 +86,11 @@ $(function () {
 			var wsUrl = remoteUrl.replace("http", "ws") + "/ws/monitor"
 
 			socket = new WebSocket(wsUrl);
-			//open
 			socket.onopen = function () {
 				console.log("Socket opened");
 				socket.send("send message start(From Client)");
 			};
-			//receive message
 			socket.onmessage = function (msg) {
-
 				if (msg.data.indexOf("monitorCPU") > 0) {
 					var result = JSON.parse(msg.data);
 					while (option.series[0].data.length >= 300) {
@@ -113,46 +101,93 @@ $(function () {
 					option.series[1].data = option.series[1].data.concat(result.monitorMem);
 					monitorChart.setOption({ series: option.series });
 					OSinfo.textContent = result.monitorOS;
-					Diskinfo.textContent = result.monitorDisk;
-					Networkinfo.textContent = result.monitorNetwork;
-					//monitorChart.setOption({title: {text: result[0]}});
 
+					// Update Diskinfo as table
+					var diskData = result.monitorDisk;
+					updateDiskTable(diskData);
+
+					var networkData = result.monitorNetwork;
+					updateNetworkTable(networkData);
 				}
-				// else {
-				// 	//connect to new ws url
-				// 	console.log(msg.data);
-				// 	var idx = msg.data.indexOf("new url:")
-				// 	if(idx >= 0) {
-				// 		var newUrl = msg.data.substring(8).split(' ')[0];
-				// 		newUrl = newUrl + '/'+ base_url
-				// 		setTimeout(()=>{
-				// 			socket.close();
-				// 		},1000);
-				//
-				// 		setTimeout(()=>{
-				// 			monitorChartRefresh(newUrl)
-				// 		},2000);
-				// 	}
-				//
-				// }
 			};
 			socket.onclose = function () {
 				console.log("Socket closed");
 			};
-			//error
 			socket.onerror = function () {
 				alert("Socket error");
 			}
-
-
 		}
 	}
+
+	function updateDiskTable(diskData) {
+		var diskTable = document.getElementById('diskTable').getElementsByTagName('tbody')[0];
+		diskTable.innerHTML = ''; // Clear previous data
+		var rows = diskData.split('\n').map(function (line) {
+			return line.split(':').map(function (item) {
+				return item.trim();
+			});
+		});
+
+		var row = diskTable.insertRow();
+		rows.forEach(function (data) {
+			var cell = row.insertCell();
+			cell.textContent = data[1];
+		});
+	}
+
+	// function updateNetworkTable(networkData) {
+	// 	var networkTable = document.getElementById('networkTable').getElementsByTagName('tbody')[0];
+	// 	networkTable.innerHTML = ''; // Clear previous data
+	// 	var interfaces = networkData.split('Network Interface Name: ');
+	// 	for (var i = 1; i < interfaces.length; i++) {
+	// 		var interfaceData = interfaces[i].split('\n');
+	// 		var row = networkTable.insertRow();
+	// 		interfaceData.forEach(function (data) {
+	// 			var cell = row.insertCell();
+	// 			var keyValue = data.split(':');
+	// 			var key = keyValue[0].trim();
+	// 			var value = keyValue.slice(1).join(':').trim();
+	// 			if (key === "MAC Address") {
+	// 				value = value.split(':').join(': '); // Add space after each colon for MAC address
+	// 			} else if (key === "IPv4 Address" || key === "IPv6 Address") {
+	// 				value = value.split('@')[1]; // Extract only the address part
+	// 			}
+	// 			cell.textContent = value;
+	// 		});
+	// 	}
+	// }
+	function updateNetworkTable(networkData) {
+		var networkTable = document.getElementById('networkTable').getElementsByTagName('tbody')[0];
+		networkTable.innerHTML = ''; // Clear previous data
+		var interfaces = networkData.split('Network Interface Name: ');
+		for (var i = 1; i < interfaces.length; i++) {
+			var interfaceData = interfaces[i].split('\n');
+			var row = networkTable.insertRow();
+			var name = interfaceData[0].trim(); // Extract interface name
+			var cell = row.insertCell();
+			cell.textContent = name; // Display interface name
+			interfaceData.splice(0, 1); // Remove interface name from data array
+			interfaceData.forEach(function (data) {
+				var cell = row.insertCell();
+				var keyValue = data.split(':');
+				var key = keyValue[0].trim();
+				var value = keyValue.slice(1).join(':').trim();
+				if (key === "MAC Address") {
+					value = value.split(':').join(': '); // Add space after each colon for MAC address
+				} else if (key === "IPv4 Address" || key === "IPv6 Address") {
+					value = value.split('@')[1]; // Extract only the address part
+				}
+				cell.textContent = value;
+			});
+		}
+	}
+
+
+
 	window.onbeforeunload = function () {
 		socket.close();
 	}
-	//when window close, close socket
 	window.unload = function () {
 		socket.close();
 	};
-
 });

@@ -3,14 +3,48 @@
 
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>System Monitor</title>
 </head>
 
 <body>
     <div id="monitorChart" style="height: 250px;"></div>
     <div id="OSinfo"></div>
-    <div id="Diskinfo"></div>
-    <div id="Networkinfo"></div>
+    <div id="Diskinfo">
+        <table id="diskTable" border="1">
+            <thead>
+                <tr>
+                    <th>Disk Name</th>
+                    <th>Disk Size</th>
+                    <th>Disk Model</th>
+                    <th>Disk Read Bytes</th>
+                    <th>Disk Write Bytes</th>
+                    <th>Disk Read Transfer Rate</th>
+                    <th>Disk Usage</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <div id="Networkinfo">
+        <table id="networkTable" border="1">
+            <thead>
+                <tr>
+                    <th>Network Interface Name</th>
+                    <th>MAC Address</th>
+                    <th>IPv4 Address</th>
+                    <th>IPv6 Address</th>
+                    <th>Packets Sent</th>
+                    <th>Packets Received</th>
+                    <th>Bytes Sent</th>
+                    <th>Bytes Received</th>
+                    <th>Speed</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
 </body>
 
 <script src="/static/plugins/jquery/jquery.min.js"></script>
