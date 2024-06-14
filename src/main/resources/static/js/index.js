@@ -1,11 +1,15 @@
-$(function() {
+$(function () {
 	var monitorChart = undefined;
-	var socket= undefined;
+	var OSinfo = undefined;
+	var Diskinfo = undefined;
+
+	var Networkinfo = undefined;
+	var socket = undefined;
 	var option = {
 		title: {
 			text: 'System usage'
 		},
-		tooltip : {
+		tooltip: {
 			trigger: 'axis',
 			axisPointer: {
 				type: 'cross',
@@ -15,7 +19,7 @@ $(function() {
 			}
 		},
 		legend: {
-			data:['cpu%','mem%']
+			data: ['cpu%', 'mem%']
 		},
 		toolbox: {
 			feature: {
@@ -28,15 +32,15 @@ $(function() {
 			bottom: '3%',
 			containLabel: true
 		},
-		xAxis : [
+		xAxis: [
 			{
-				type : 'time',
-				boundaryGap : false,
+				type: 'time',
+				boundaryGap: false,
 			}
 		],
-		yAxis : [
+		yAxis: [
 			{
-				type : 'value',
+				type: 'value',
 				// max:100,
 				name: '',
 
@@ -44,22 +48,22 @@ $(function() {
 
 		],
 		// series:[],
-		series : [
+		series: [
 			{
-				name:'cpu%',
-				type:'line',
+				name: 'cpu%',
+				type: 'line',
 				symbol: 'none',
 				data: []
 
 			},
 			{
-				name:'mem%',
-				type:'line',
+				name: 'mem%',
+				type: 'line',
 				symbol: 'none',
 				data: []
 			}
 		],
-		color:['#00A65A', '#c23632', '#367FA9']
+		color: ['#00A65A', '#c23632', '#367FA9']
 	};
 	var arrayIp = [];
 	freshChart();
@@ -69,6 +73,9 @@ $(function() {
 	 */
 	function freshChart() {
 		monitorChart = echarts.init(document.getElementById('monitorChart'));
+		OSinfo = document.getElementById('OSinfo');
+		Diskinfo = document.getElementById('Diskinfo');
+		Networkinfo = document.getElementById('Networkinfo');
 		monitorChart.setOption(option);
 		monitorChartRefresh();
 
@@ -82,10 +89,10 @@ $(function() {
 			console.log("support WebSocket");
 
 			var remoteUrl = "http://" + window.location.host;
-			if(newUrl !== undefined) {
+			if (newUrl !== undefined) {
 				remoteUrl = newUrl
 			}
-			var wsUrl = remoteUrl.replace("http","ws") + "/ws/monitor"
+			var wsUrl = remoteUrl.replace("http", "ws") + "/ws/monitor"
 
 			socket = new WebSocket(wsUrl);
 			//open
@@ -104,7 +111,10 @@ $(function() {
 					}
 					option.series[0].data = option.series[0].data.concat(result.monitorCPU);
 					option.series[1].data = option.series[1].data.concat(result.monitorMem);
-					monitorChart.setOption({series: option.series});
+					monitorChart.setOption({ series: option.series });
+					OSinfo.textContent = result.monitorOS;
+					Diskinfo.textContent = result.monitorDisk;
+					Networkinfo.textContent = result.monitorNetwork;
 					//monitorChart.setOption({title: {text: result[0]}});
 
 				}
