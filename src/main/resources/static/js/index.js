@@ -132,18 +132,18 @@ $(function () {
 
 			var row = diskTable.insertRow();
 			rows.forEach(function (data) {
+				if (data[0] === "Disk Read Transfer Rate") {
+					return; // Skip this row
+				}
 				var cell = row.insertCell();
 				if (data[0] == "Disk Read Bytes" || data[0] == "Disk Write Bytes") {
 					cell.textContent = (data[1] / 1048576).toFixed(3);
-				}
-				else {
+				} else {
 					cell.textContent = data[1];
 				}
 			});
 		}
 	}
-
-
 
 	function updateNetworkTable(networkData) {
 		var networkTable = document.getElementById('networkTable').getElementsByTagName('tbody')[0];
@@ -165,7 +165,7 @@ $(function () {
 					value = value.split(':').join(': '); // Add space after each colon for MAC address
 				} else if (key === "IPv4 Address" || key === "IPv6 Address") {
 					value = value.split('@')[1]; // Extract only the address part
-				} else if (key == "Bytes Sent" || key === "Bytes Sent") {
+				} else if (key == "Bytes Sent" || key === "Bytes Received") {
 					value /= 1048576;
 					value = value.toFixed(3);
 				} else if (key == "Packets Sent" || key == "Packets Received") {
@@ -177,6 +177,7 @@ $(function () {
 
 					value = number.toFixed(3) + " MBps";
 				}
+
 				cell.textContent = value;
 			});
 		}
