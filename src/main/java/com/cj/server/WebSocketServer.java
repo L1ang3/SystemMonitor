@@ -53,7 +53,6 @@ public class WebSocketServer {
                     while (SessionSet.size() > 0) {
                         try {
                             Map<String, Object> result = new HashMap<String, Object>();
-                            ;
                             Date currentDate = new Date();
                             double cpuRate = OSUtil.cpuUsage();
                             double memRate = OSUtil.memUsage();
@@ -70,10 +69,12 @@ public class WebSocketServer {
                             result.put("monitorDisk", OSUtil.getDiskUsageInfo());
                             result.put("monitorNetwork", OSUtil.getNetworkInfo());
 
-                            System.out.println("Operating System Info: " + OSUtil.getOperatingSystemInfo());
-                            System.out.println("Disk Usage Info: \n" + OSUtil.getDiskUsageInfo());
-                            System.out.println("Network Interface Info: \n" + OSUtil.getNetworkInfo());
-                            System.out.println("TCP Connection Info: \n" + OSUtil.getTCPConnectionInfo());
+                            // System.out.println("Operating System Info: " +
+                            // OSUtil.getOperatingSystemInfo());
+                            // System.out.println("Disk Usage Info: \n" + OSUtil.getDiskUsageInfo());
+                            // System.out.println("Network Interface Info: \n" + OSUtil.getNetworkInfo());
+                            // System.out.println("TCP Connection Info: \n" +
+                            // OSUtil.getTCPConnectionInfo());
                             Util.sleep(1000);
                             BroadCastSystemInfo(result);
                         } catch (IOException e) {

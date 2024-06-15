@@ -128,8 +128,37 @@ public class OSUtil {
         for (NetworkIF net : networkIFs) {
             networkInfo.append("Network Interface Name: ").append(net.getName()).append("\n");
             networkInfo.append("MAC Address: ").append(net.getMacaddr()).append("\n");
-            networkInfo.append("IPv4 Address: ").append(net.getIPv4addr().toString()).append("\n");
-            networkInfo.append("IPv6 Address: ").append(net.getIPv6addr().toString()).append("\n");
+            // 获取网络接口的 IPv4 地址数组
+            String[] ipv4Addresses = net.getIPv4addr();
+
+            // 检查 IPv4 地址数组是否为空
+            if (ipv4Addresses != null && ipv4Addresses.length > 0) {
+                // 遍历 IPv4 地址数组
+                for (String ipv4Address : ipv4Addresses) {
+                    networkInfo.append("IPv4 Address:@").append(ipv4Address).append("\n");
+                    // System.out.println("IPv4 Address: " + ipv4Address);
+                }
+            } else {
+                networkInfo.append("IPv4 Address:@null").append("\n");
+                // System.out.println("No IPv4 address configured for network interface: " +
+                // net.getName());
+            }
+
+            // 获取网络接口的 IPv4 地址数组
+            String[] ipv6Addresses = net.getIPv6addr();
+
+            // 检查 IPv4 地址数组是否为空
+            if (ipv6Addresses != null && ipv6Addresses.length > 0) {
+                // 遍历 IPv4 地址数组
+                for (String ipv6Address : ipv6Addresses) {
+                    networkInfo.append("IPv6 Address:@").append(ipv6Address).append("\n");
+                    // System.out.println("IPv6 Address: " + ipv6Address);
+                }
+            } else {
+                networkInfo.append("IPv6 Address:@null").append("\n");
+                // System.out.println("No IPv6 address configured for network interface: " +
+                // net.getName());
+            }
             networkInfo.append("Packets Sent: ").append(net.getPacketsSent()).append("\n");
             networkInfo.append("Packets Received: ").append(net.getPacketsRecv()).append("\n");
             networkInfo.append("Bytes Sent: ").append(net.getBytesSent()).append("\n");
