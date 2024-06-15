@@ -131,7 +131,11 @@ $(function () {
 			});
 
 			var row = diskTable.insertRow();
+
 			rows.forEach(function (data) {
+				if (data[1] != null && data[1].startsWith("\\\\.\\")) {
+					data[1] = data[1].substring(4);
+				}
 				if (data[0] === "Disk Read Transfer Rate") {
 					return; // Skip this row
 				}

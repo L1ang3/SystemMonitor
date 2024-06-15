@@ -73,8 +73,6 @@ public class WebSocketServer {
                             // OSUtil.getOperatingSystemInfo());
                             // System.out.println("Disk Usage Info: \n" + OSUtil.getDiskUsageInfo());
                             // System.out.println("Network Interface Info: \n" + OSUtil.getNetworkInfo());
-                            // System.out.println("TCP Connection Info: \n" +
-                            // OSUtil.getTCPConnectionInfo());
                             Util.sleep(1000);
                             BroadCastSystemInfo(result);
                         } catch (IOException e) {

@@ -8,8 +8,11 @@ import oshi.hardware.GlobalMemory;
 import oshi.hardware.HardwareAbstractionLayer;
 import oshi.hardware.NetworkIF;
 import oshi.software.os.OSProcess;
+import oshi.software.os.OSThread;
 import oshi.software.os.OperatingSystem;
 import oshi.software.os.OperatingSystem.ProcessSort;
+import oshi.software.os.linux.LinuxOSProcess;
+import oshi.software.os.windows.WindowsOSProcess;
 import oshi.util.Util;
 import oshi.hardware.HWDiskStore;
 
@@ -139,7 +142,7 @@ public class OSUtil {
                     // System.out.println("IPv4 Address: " + ipv4Address);
                 }
             } else {
-                networkInfo.append("IPv4 Address:@null").append("\n");
+                networkInfo.append("IPv4 Address:@").append("\n");
                 // System.out.println("No IPv4 address configured for network interface: " +
                 // net.getName());
             }
@@ -155,7 +158,7 @@ public class OSUtil {
                     // System.out.println("IPv6 Address: " + ipv6Address);
                 }
             } else {
-                networkInfo.append("IPv6 Address:@null").append("\n");
+                networkInfo.append("IPv6 Address:@").append("\n");
                 // System.out.println("No IPv6 address configured for network interface: " +
                 // net.getName());
             }
@@ -166,21 +169,6 @@ public class OSUtil {
             networkInfo.append("Speed: ").append(net.getSpeed()).append(" bps\n");
         }
         return networkInfo.toString();
-    }
-
-    public static String getTCPConnectionInfo() {
-        StringBuilder tcpConnectionInfo = new StringBuilder();
-        OperatingSystem os = SI.getOperatingSystem();
-        List<OSProcess> processes = os.getProcesses(0, ProcessSort.CPU);
-
-        for (OSProcess process : processes) {
-            if (process.getName().equals("tcp") || process.getName().equals("tcp6")) {
-                tcpConnectionInfo.append("Process ID: ").append(process.getProcessID()).append("\n");
-                tcpConnectionInfo.append("Process Name: ").append(process.getName()).append("\n");
-                tcpConnectionInfo.append("User: ").append(process.getUser()).append("\n");
-            }
-        }
-        return tcpConnectionInfo.toString();
     }
 
     public static String getOperatingSystemInfo() {
